@@ -15,7 +15,7 @@ first-principles forward model paints realistic glass returns onto clean simulat
   buildings/        procedural building → spawn in CosysAirSim/UE5 → scan → raw geometry + labels
   forward_model/    per-beam physics: reflectance, return probability, saturation, see-through
   calibration/      label REAL Unitree-L2 scans against ground-truth window corners
-  analysis/         exploratory data analysis (EDA) + the presentation figure generator
+  analysis/         exploratory data analysis (EDA) + the figure generator
   test_bed.py       the 6-DOF rig kinematics (real ground-truth capture)
 ```
 
@@ -26,8 +26,8 @@ first-principles forward model paints realistic glass returns onto clean simulat
 | `buildings/` | Procedural multi-face buildings (several facade systems; square / L / U / T footprints) → spawn → orbit capture → raw `.npz` (geometry + labels, no intensity). |
 | `forward_model/` | First-principles LiDAR optics: reflectance ρ(θ), return-probability P(θ), 255 saturation, transmission → interior returns. Turns clean sim geometry into realistic intensity + sparse glass. |
 | `calibration/` | Labels real L2 scans: fit the true glass plane, project points perpendicularly, region-grow → `glass / frame / interior / ground`. |
-| `analysis/` | EDA tools and `make_slides.py` (regenerates every presentation figure). |
-| `presentation/` | The talk: `DECK_PROMPT.md` (Claude Design brief), `figures/`, `CAPTURE_LIST.md`. |
+| `analysis/` | EDA tools and `make_slides.py` (regenerates every figure in `presentation/figures/`). |
+| `presentation/figures/` | EDA / glass-characterization figures (catalogued in `figures/INDEX.md`); regenerate with `analysis/make_slides.py`. |
 | `docs/` | `calibration.md`, `glass_characterization.md` (the glass EDA), reference PDFs. |
 | `examples/` | A few tiny labelled sample frames + a ground-truth file, for a quick look. |
 
@@ -39,7 +39,7 @@ pip install -r requirements.txt
 python3 -m pytest -q                      # 158 tests (buildings + forward_model + calibration)
 
 python3 -m buildings.render_gallery       # preview procedural buildings → /tmp/building_gallery.png
-python3 analysis/make_slides.py           # (re)build presentation figures → presentation/figures/
+python3 analysis/make_slides.py           # (re)build the EDA figures → presentation/figures/
 ```
 
 Peek at a labelled sample frame:
@@ -66,10 +66,10 @@ bags). Three real buildings were scanned with a 6-DOF rig — **L6** (43 bags), 
 `docs/calibration.md` for the labelling method and `docs/glass_characterization.md` for what
 the three glass types actually do to a LiDAR. A handful of sample frames live in `examples/`.
 
-## Presentation
+## Figures
 
-`presentation/DECK_PROMPT.md` is a ready-to-paste brief for **Claude Design**; the figures it
-references are in `presentation/figures/` (regenerate with `analysis/make_slides.py`).
+The EDA / glass-characterization figures live in `presentation/figures/` (catalogued in
+`presentation/figures/INDEX.md`). Regenerate them all with `python3 analysis/make_slides.py`.
 
 ## Status
 
