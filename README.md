@@ -8,7 +8,7 @@ nearly invisible to most sensors, so this repo builds the perception that makes 
 
 The idea: instead of a hand-tuned geometric pipeline, **classify every LiDAR point** into
 `glass / frame / interior / ground`, then read the window corners off the glass points. The
-classifier (PointNet++) is trained on real scans plus **physically simulated** ones — a
+classifier (PointNet++) is trained on real scans and to be trained on **physically simulated** ones — a
 first-principles forward model paints realistic glass returns onto clean simulator geometry.
 
 ```
