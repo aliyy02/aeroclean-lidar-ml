@@ -1,0 +1,44 @@
+# --- data (kept out of git: GBs of clouds + raw bags) ---
+# NOTE: we ignore the data/ dir, not *.npz globally, so examples/ frames and
+# calibration/tests/fixtures/ stay tracked.
+data/
+Labeled/
+*.mcap
+*.bag
+*.zip
+# raw scan / GT dataset dirs (if copied in locally)
+L6_all/
+Oxy_L2_All/
+Bech_all/
+*_Text_All/
+L6_test_*/
+L6_tests_*/
+
+# model weights
+*.pt
+*.ckpt
+*.onnx
+
+# --- UE5 / simulator binaries ---
+*.uasset
+*.umap
+
+# --- Windows/WSL cruft ---
+*Zone.Identifier
+
+# --- python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+wandb/
+build/
+dist/
+.venv/
+venv/
+
+# --- editor ---
+.vscode/
+.idea/
+*.swp

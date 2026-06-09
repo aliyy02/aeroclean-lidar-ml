@@ -1,0 +1,58 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /PointCloud2
+      Splitter Ratio: 0.5
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Enabled: true
+      Color: 160; 160; 160
+      Cell Size: 1
+      Plane Cell Count: 20
+      Reference Frame: map
+    - Class: rviz_default_plugins/PointCloud2
+      Name: PointCloud2
+      Enabled: true
+      Topic:
+        Value: /labeled/cloud
+        Depth: 1
+        Durability Policy: Transient Local
+        Reliability Policy: Reliable
+      Style: Flat Squares
+      Size (m): 0.02
+      Color Transformer: RGB8
+      Channel Name: rgb
+      Decay Time: 0
+    - Class: rviz_default_plugins/MarkerArray
+      Name: GT windows
+      Enabled: true
+      Topic:
+        Value: /labeled/markers
+        Depth: 1
+        Durability Policy: Transient Local
+        Reliability Policy: Reliable
+  Global Options:
+    Fixed Frame: map
+    Background Color: 30; 30; 30
+  Tools:
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Name: Current View
+      Distance: 14
+      Focal Point:
+        X: 4
+        Y: 1.6
+        Z: 0
+      Pitch: 0.3
+      Yaw: 3.14
+Window Geometry:
+  Height: 900
+  Width: 1400

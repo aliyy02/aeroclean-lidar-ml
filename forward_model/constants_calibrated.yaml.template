@@ -1,0 +1,39 @@
+# Calibrated forward-model constants -- TEMPLATE.
+#
+# Your calibration (the 6-DOF test-bed fit) produces a file like this. Copy it to
+#   forward_model/constants_calibrated.yaml
+# and pass that path to load_constants(); any key you omit keeps its placeholder prior
+# from constants.py. The CODE never changes -- only these numbers.
+#
+# Every key is optional. Material keys use the class names from materials.CLASS_NAMES:
+#   wall, metal_frame, glass_clear, glass_coated, glass_lowE, spandrel, ground, other
+#
+# Fields per material:
+#   a               diffuse weight  (~ rho/pi)            -- fit from intensity vs theta
+#   b               specular weight (~ Fresnel*G)         -- fit; should rank lowE>coated>clear
+#   m               Beckmann roughness (lobe width)       -- fit; small = sharp glass spike
+#   n               range falloff exponent                -- fit from the x/y/z range sweep
+#   cone_half_width glass direct-return cone (radians)    -- fit from return-rate vs theta (glass)
+#   is_glass        cone-gated?  (usually leave as prior)
+
+# --- globals ---
+C: 1.0          # lumped system constant (only the C*a, C*b products matter; scale to L2 counts)
+T: 1.0e-4       # threshold; fit so synthetic return-rate matches the real per-theta return-rate
+sigma: 0.005    # Gaussian position jitter (m); fit on flat frame/wall points, NOT glass
+
+# --- per material (fill in what the bed actually scanned; rest stay as priors) ---
+materials:
+  metal_frame:
+    a: 0.30
+    b: 0.15
+    m: 0.30
+    n: 2.0
+  glass_clear:
+    a: 0.01
+    b: 0.05
+    m: 0.03
+    n: 2.0
+    cone_half_width: 0.05
+#  glass_coated: { ... }   # only if you scanned a coated panel; else keep the prior
+#  glass_lowE:   { ... }
+#  wall:         { ... }
