@@ -21,4 +21,4 @@ uses **real labelled scans** — no synthetic stand-ins. Color convention is con
 | `S12c_seethrough.png` | Top-down: beams pass *through* glass and return from inside the room (interior behind the glass plane). |
 | `S13_forward_model.png` | Plain-language model: the three ways a surface returns the laser (matte / mirror / grazing), and the three real glasses as different mixes. |
 | `S14_buildings_gallery.png` | Procedural building generator (facade systems + footprints) for synthetic training scenes. |
-| `S16_results_placeholder.png` | Confusion-matrix + metrics template, marked PENDING INFERENCE. |
+| `S16_results.png` | Real held-out-test results: confusion matrix (glass 97% / ground 95% / interior 77% / frame 67% diagonal) + per-class IoU (glass .86 / ground .89 / interior .66 / frame .54), mIoU 0.74. |
