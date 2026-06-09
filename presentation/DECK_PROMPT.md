@@ -98,8 +98,9 @@ not yet measured, leave as clearly-pending.
   the **Unitree L2** LiDAR and moves it to **precisely known poses** in front of a glass facade.
 - Every scan therefore comes with a **known sensor position** and **known window-corner
   geometry** — exactly what supervised learning needs.
-- IMAGE: `S07_testbed_schematic.png` (the diagram) + `S07_testbed_photo.png` (your real rig
-  photo) side by side.
+- IMAGE: **prefer your real rig photo `S07_testbed_photo.png` as the main image** (it's more
+  convincing than a diagram); optionally place the small schematic `S07_testbed_schematic.png`
+  beside it to label the pose axes / GT-corner idea.
 - Speaker note: "6-DOF = position + orientation fully controlled."
 
 ## Slide 8 — What a point cloud actually is  `[TRUE]`
@@ -107,9 +108,11 @@ not yet measured, leave as clearly-pending.
   intensity (0–255)**.
 - A scan is **thousands of these points** — **unordered, no grid, no pixels**. Density varies
   with range and surface.
-- Glass is the catch: it mostly lets the beam **through**, so it returns **few, erratic** points.
-- IMAGE: `S08_pointcloud_explainer.png` — one real frame colored by intensity + the explainer
-  panel. *(If you captured `S08_rviz_scan.png`, use it here instead for a "live system" look.)*
+- Glass is the catch: it mostly lets the beam **through**, so it returns **few, erratic** points
+  — yet you can already make out the window grid in the raw cloud.
+- IMAGE: `S08_pointcloud_explainer.png` — a real raw scan colored by intensity (windows visible)
+  + the explainer panel. Optionally add `S10c_cloud3d.png` (the same idea in 3-D) or your
+  `S08_rviz_scan.png` for a "live system" look.
 - Speaker note: this is the slide that teaches the audience to read every later plot.
 
 ## Slide 9 — Reframing the task: segment, then extract corners  `[TRUE]`
@@ -134,7 +137,8 @@ not yet measured, leave as clearly-pending.
   recessed frames — getting clean labels despite the measurement error.
 - **142 real scans labelled** across **three buildings** (L6: 43, Oxy: 59, Bechtel: 40).
 - IMAGE: `S10a_labels.png` (labelled scans, all three buildings) + `S10b_class_distribution.png`
-  (class mix — glass is the minority class).
+  (class mix — glass is the minority class). `S10c_cloud3d.png` (3-D labelled L6 cloud) is a
+  strong hero image here too.
 - Speaker note: emphasise this was the hard, multi-day data-engineering effort.
 
 ## Slide 11 — Simulation and the sim-to-real gap  `[TRUE]`
@@ -156,10 +160,11 @@ not yet measured, leave as clearly-pending.
     (Fresnel reflection), and **see-through** — beams return from up to 2.5 m **inside the room**.
 - Two universal effects: **saturation** (the sensor clips at 255) and **transmission** (interior
   returns behind the glass).
-- IMAGE: `S12a_angular_glass.png` (intensity vs incidence angle, 3 types), with
-  `S12b_saturation_hist.png` (255 clipping) and `S12c_seethrough.png` (beams returning from
-  inside the room) as supporting panels. *(Optional: add `S12_facade_photos.png` of the three
-  buildings.)*
+- IMAGE: `S12a_angular_glass.png` (intensity vs incidence angle, 3 types, with bands), with
+  `S12b_saturation_hist.png` (how often each glass pins at 255 — Bech 87%) and
+  `S12c_seethrough.png` (beams returning from inside the room) as supporting panels.
+  *(Optional: add `S12_facade_photos.png` of the three buildings.)* This is figure-heavy —
+  consider splitting across two slides if it's crowded.
 - Speaker note: the centrepiece EDA slide — "this is why naïve geometry fails."
 
 ## Slide 13 — A first-principles forward model  `[TRUE]`
@@ -173,9 +178,11 @@ not yet measured, leave as clearly-pending.
   - plus **saturation clipping at 255** and **transmission → interior returns**.
 - Range only enters once, as a **1/R² noise floor** (faint far returns are lost) — matching the
   real sensor.
-- IMAGE: `S13_forward_model.png` — reflectance ρ(θ) and return-probability P(θ) for the three
-  glass archetypes.
-- Speaker note: "first-principles" = derived from optics, then calibrated to our real scans.
+- IMAGE: `S13_forward_model.png` — plain-language: (left) the three ways a surface returns the
+  laser (matte = same at every angle, mirror = only head-on, glass = flares at grazing), (right)
+  the three real glasses as different mixes of those. Maps one-to-one onto the EDA in slide 12.
+- Speaker note: "first-principles" = derived from optics, then calibrated to our real scans. If
+  you want the math, mention ρ(θ) = diffuse + grazing + specular, but the picture says it all.
 
 ## Slide 14 — The simulation environment  `[TRUE]`
 - **CosysAirSim + Unreal Engine 5**, using the **Standard LiDAR in ComputerVision mode**: it

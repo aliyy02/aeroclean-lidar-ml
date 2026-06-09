@@ -83,32 +83,76 @@ def incidence_deg(xyz, nrm):
 NS = {"L6": [1, 9, 20, 30, 43], "Oxy": [1, 11, 20, 31, 43], "Bech": [1, 14, 21, 26, 34]}
 
 
+def stack_bag(ds, n, nframes=30):
+    """Accumulate the first nframes of one bag (static rig pose) -> a dense cloud."""
+    fs = _frames(ds, n)[:nframes]
+    X = np.vstack([np.load(f)["xyz"].astype(float) for f in fs])
+    I = np.concatenate([np.load(f)["intensity"].astype(float) for f in fs])
+    L = np.concatenate([np.load(f)["label"].astype(int) for f in fs])
+    N = np.vstack([np.load(f)["normal"].astype(float) for f in fs])
+    return X, I, L, N
+
+
+def facade_normal(lab, nrm):
+    """One robust facade normal from the FRAME points (solid mullions = clean normals)."""
+    sel = lab == 0
+    if sel.sum() < 20:
+        sel = (lab == 0) | (lab == 1)
+    v = np.median(nrm[sel], axis=0)
+    return v / (np.linalg.norm(v) + 1e-9)
+
+
+def glass_angle_intensity(ds, ns, stride=2):
+    """Per-frame: robust facade normal -> incidence for GLASS points. Returns (theta_deg, I)."""
+    TH, II = [], []
+    for n in ns:
+        for f in _frames(ds, n, stride):
+            d = np.load(f)
+            xyz = d["xyz"].astype(float); I = d["intensity"].astype(float)
+            lab = d["label"].astype(int); nrm = d["normal"].astype(float)
+            if (lab == 1).sum() < 5:
+                continue
+            fn = facade_normal(lab, nrm)
+            R = np.linalg.norm(xyz, axis=1)
+            u = xyz / np.maximum(R, 1e-9)[:, None]
+            th = np.degrees(np.arccos(np.clip(np.abs(u @ fn), 0, 1)))
+            m = lab == 1
+            TH.append(th[m]); II.append(I[m])
+    if not TH:
+        return np.array([]), np.array([])
+    return np.concatenate(TH), np.concatenate(II)
+
+
 # ============================================================ S08 point cloud explainer
 def fig_pointcloud_explainer():
-    d = load_one("Oxy", 1)
-    xyz, I = d["xyz"], d["I"]
-    fig = plt.figure(figsize=(13, 6))
-    ax = fig.add_subplot(121, projection="3d")
-    s = ax.scatter(xyz[:, 1], xyz[:, 0], -xyz[:, 2], c=I, cmap="viridis",
-                   s=3, vmin=0, vmax=255)
-    ax.set_xlabel("y  (horizontal, m)"); ax.set_ylabel("x  (depth, m)")
-    ax.set_zlabel("height, m"); ax.set_title("One LiDAR frame, colored by intensity")
-    ax.view_init(elev=18, azim=-72)
-    cb = fig.colorbar(s, ax=ax, shrink=0.6, pad=0.02); cb.set_label("intensity (0–255)")
+    """A REAL dense scan colored by intensity (windows visible) + plain text on what a
+    point cloud is. No labels yet -- this is the raw thing the LiDAR gives us."""
+    xyz, I, lab, N = stack_bag("L6", 1, 30)
+    fig = plt.figure(figsize=(15, 6.2))
+    ax = fig.add_subplot(121)
+    s = ax.scatter(xyz[:, 1], -xyz[:, 2], c=I, cmap="turbo", s=2, vmin=0, vmax=255)
+    gy = xyz[lab == 1, 1]; gz = -xyz[lab == 1, 2]
+    ax.set_xlim(np.percentile(gy, 1) - 0.4, np.percentile(gy, 99) + 0.4)
+    ax.set_ylim(np.percentile(gz, 1) - 0.6, np.percentile(gz, 99) + 0.4)
+    ax.set_aspect("equal", "box")
+    ax.set_xlabel("y (m)"); ax.set_ylabel("height (m)")
+    ax.set_title("A real LiDAR scan (raw, colored by intensity)")
+    cb = fig.colorbar(s, ax=ax, shrink=0.8); cb.set_label("intensity (0–255)")
 
     ax2 = fig.add_subplot(122); ax2.axis("off")
-    ax2.set_title("What is a point cloud?")
-    txt = ("Each LiDAR beam that returns gives ONE point:\n\n"
-           "   •  x, y, z   — 3-D position (metres)\n"
-           "   •  intensity — strength of the return (0–255)\n"
-           "   •  ring, time — which laser, when\n\n"
-           f"This frame:  {xyz.shape[0]:,} points\n\n"
-           "Unordered + unstructured: no grid, no pixels.\n"
-           "Density varies with range & surface. Glass mostly\n"
-           "lets the beam THROUGH, so it returns few, erratic\n"
-           "points — the core difficulty of this project.")
-    ax2.text(0.02, 0.95, txt, va="top", ha="left", fontsize=15, family="monospace",
-             transform=ax2.transAxes)
+    ax2.set_title("What is a point cloud?", loc="left")
+    txt = ("Each laser beam that comes back = ONE point:\n\n"
+           "   •  x, y, z   — where it hit, in metres\n"
+           "   •  intensity — how bright the return was (0–255)\n"
+           "   •  which laser ring, and when\n\n"
+           "A scan is thousands of these points —\n"
+           "unordered, no grid, no pixels.\n\n"
+           "Look left: you can already SEE the window grid\n"
+           "emerge from the points. The frames return\n"
+           "cleanly; the glass is patchy because the beam\n"
+           "mostly passes through it — that gap is the\n"
+           "core difficulty of this project.")
+    ax2.text(0.0, 0.95, txt, va="top", ha="left", fontsize=15.5, transform=ax2.transAxes)
     fig.tight_layout(); fig.savefig(f"{OUT}/S08_pointcloud_explainer.png"); plt.close(fig)
 
 
@@ -172,40 +216,64 @@ def fig_class_distribution():
 
 # ============================================================ S12a angular (glass)
 def fig_angular_glass():
-    fig, ax = plt.subplots(figsize=(9.5, 6))
-    bins = np.arange(0, 75, 5)
-    ctr = bins[:-1] + 2.5
+    fig, ax = plt.subplots(figsize=(10, 6.2))
+    bins = np.arange(0, 72, 6); ctr = bins[:-1] + 3
     for ds in ["L6", "Oxy", "Bech"]:
-        agg = load_agg(ds, NS[ds])
-        X, I, L, N = agg
-        m = L == 1
-        th = incidence_deg(X[m], N[m]); inten = I[m]
-        med = [np.median(inten[(th >= a) & (th < b)]) if np.any((th >= a) & (th < b)) else np.nan
-               for a, b in zip(bins[:-1], bins[1:])]
-        ax.plot(ctr, med, "-o", color=DS[ds], lw=2.5, ms=7, label=f"{ds} glass")
+        th, inten = glass_angle_intensity(ds, NS[ds])
+        med, lo, hi = [], [], []
+        for a, b in zip(bins[:-1], bins[1:]):
+            s = inten[(th >= a) & (th < b)]
+            if s.size >= 30:
+                med.append(np.median(s)); lo.append(np.percentile(s, 25))
+                hi.append(np.percentile(s, 75))
+            else:
+                med.append(np.nan); lo.append(np.nan); hi.append(np.nan)
+        med, lo, hi = np.array(med), np.array(lo), np.array(hi)
+        ok = ~np.isnan(med)
+        ax.fill_between(ctr[ok], lo[ok], hi[ok], color=DS[ds], alpha=0.15)
+        ax.plot(ctr[ok], med[ok], "-o", color=DS[ds], lw=3, ms=7, label=f"{ds} glass")
     ax.axhline(255, ls="--", color="k", alpha=0.5)
-    ax.text(2, 248, "sensor ceiling (255)", fontsize=12)
-    ax.set_xlabel("incidence angle (deg)"); ax.set_ylabel("median intensity (0–255)")
-    ax.set_title("Glass return intensity vs incidence — three glass types")
-    ax.legend(); ax.set_ylim(0, 270)
+    ax.text(50, 258, "sensor ceiling (255)", fontsize=11, color="#555")
+    ax.set_xlabel("incidence angle  (0 = head-on  →  70 = grazing)")
+    ax.set_ylabel("glass return intensity (0–255)")
+    ax.set_title("How bright glass returns vs viewing angle")
+    ax.annotate("L6: bright flash\nhead-on", (4, 232), (12, 190), color=DS["L6"], fontsize=12,
+                arrowprops=dict(arrowstyle="->", color=DS["L6"]))
+    ax.annotate("Bech: flares to 255\nat grazing", (60, 252), (30, 210), color=DS["Bech"],
+                fontsize=12, arrowprops=dict(arrowstyle="->", color=DS["Bech"]))
+    ax.legend(loc="center right"); ax.set_ylim(0, 275); ax.set_xlim(0, 70)
     fig.savefig(f"{OUT}/S12a_angular_glass.png"); plt.close(fig)
 
 
 # ============================================================ S12b saturation
 def fig_saturation():
-    fig, axes = plt.subplots(1, 3, figsize=(15, 4.6), sharey=True)
-    for ax, ds in zip(axes, ["L6", "Oxy", "Bech"]):
-        agg = load_agg(ds, NS[ds])
-        _, I, L, _ = agg
+    """Bech glass is ~87% pinned at the 255 ceiling, so a plain histogram hides the story
+    (the spike runs off-chart). Show it explicitly: LEFT the shape of the UN-clipped returns,
+    RIGHT the fraction pinned at 255."""
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(14.5, 5.6))
+    sat = {}
+    for ds in ["L6", "Oxy", "Bech"]:
+        agg = load_agg(ds, NS[ds]); _, I, L, _ = agg
         inten = I[L == 1]
-        sat = 100 * np.mean(inten >= 254)
-        ax.hist(inten, bins=np.arange(0, 257, 8), color=DS[ds], alpha=0.85)
-        ax.axvline(255, ls="--", color="k")
-        ax.set_title(f"{ds} glass\n{sat:.0f}% saturated at 255")
-        ax.set_xlabel("intensity")
-    axes[0].set_ylabel("point count")
-    fig.suptitle("Glass intensity histograms — saturation clipping at 255",
-                 fontsize=19, fontweight="bold")
+        sat[ds] = 100 * np.mean(inten >= 254)
+        unc = inten[inten < 254]
+        a1.hist(unc, bins=np.arange(0, 256, 8), density=True, histtype="step", lw=3,
+                color=DS[ds], label=f"{ds} glass")
+    a1.set_xlabel("intensity of returns BELOW the ceiling (0–254)")
+    a1.set_ylabel("fraction (normalised)")
+    a1.set_title("Shape of the un-clipped glass returns")
+    a1.legend(loc="upper left"); a1.set_xlim(0, 255)
+
+    dss = ["L6", "Oxy", "Bech"]
+    bars = a2.bar(dss, [sat[d] for d in dss], color=[DS[d] for d in dss], edgecolor="white")
+    for d, b in zip(dss, bars):
+        a2.text(b.get_x() + b.get_width() / 2, sat[d] + 2, f"{sat[d]:.0f}%",
+                ha="center", fontsize=15, fontweight="bold")
+    a2.set_ylabel("% of glass returns pinned at 255")
+    a2.set_title("How often the glass SATURATES the sensor")
+    a2.set_ylim(0, 100)
+    fig.suptitle("Glass brightness clips at the sensor's 255 ceiling — Bechtel almost always",
+                 fontsize=17, fontweight="bold")
     fig.tight_layout(rect=(0, 0, 1, 0.92)); fig.savefig(f"{OUT}/S12b_saturation_hist.png")
     plt.close(fig)
 
@@ -233,61 +301,70 @@ def fig_seethrough():
 
 # ============================================================ S03 ransac baseline / why it breaks
 def fig_ransac_baseline():
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(14, 5.4))
-    # left: ideal single board -> one tight plane
-    rng = np.random.default_rng(0)
-    yb = rng.uniform(-0.8, 0.8, 4000); zb = rng.uniform(-0.5, 0.5, 4000)
-    xb = 2.0 + rng.normal(0, 0.01, 4000)
-    a1.scatter(xb, zb, s=3, c="#555")
-    a1.axvline(2.0, ls="--", color="#2ca02c", lw=2)
-    a1.set_title("Single flat board\n→ ONE plane, RANSAC works")
-    a1.set_xlabel("x — depth (m)"); a1.set_ylabel("height (m)")
-    a1.set_xlim(1.6, 3.4)
-    a1.text(2.02, 0.45, "RANSAC plane", color="#2ca02c", fontsize=12)
-    # right: real facade -> multiple depth layers
-    d = load_one("Bech", 14)
-    xyz, lab = d["xyz"], d["lab"]
+    """Both failure modes, on a REAL dense L6 bag: (1) many windows, not one board;
+    (2) many depth layers, so one plane can't fit it."""
+    xyz, I, lab, N = stack_bag("L6", 1, 30)
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(15, 5.6))
+    # left: frontal -> a GRID of windows
+    for k in [2, 0, 3, 1]:
+        m = lab == k
+        a1.scatter(xyz[m, 1], -xyz[m, 2], s=1.5, c=CLS[k], label=CLS_NAME[k])
+    gy = xyz[lab == 1, 1]; gz = -xyz[lab == 1, 2]
+    a1.set_xlim(np.percentile(gy, 1) - 0.4, np.percentile(gy, 99) + 0.4)
+    a1.set_ylim(np.percentile(gz, 1) - 0.6, np.percentile(gz, 99) + 0.4)
+    a1.set_title("Problem 1 — a grid of windows")
+    a1.set_xlabel("y (m)"); a1.set_ylabel("height (m)"); a1.set_aspect("equal", "box")
+    a1.legend(loc="upper right", markerscale=4, fontsize=11)
+    # right: top-down -> many depth layers; overlay the single plane RANSAC would pick
     for k in [0, 1, 3]:
         m = lab == k
-        a2.hist(xyz[m, 0], bins=np.arange(1.6, 3.4, 0.04), color=CLS[k],
-                alpha=0.7, label=CLS_NAME[k])
-    a2.set_title("Real window facade\n→ MANY depth layers, single plane fails")
-    a2.set_xlabel("x — depth (m)"); a2.set_ylabel("point count")
-    a2.set_xlim(1.6, 3.4); a2.legend()
-    fig.suptitle("Why the geometric (RANSAC) baseline breaks on windows",
-                 fontsize=19, fontweight="bold")
-    fig.tight_layout(rect=(0, 0, 1, 0.93)); fig.savefig(f"{OUT}/S03_ransac_baseline.png")
+        a2.scatter(xyz[m, 1], xyz[m, 0], s=2, c=CLS[k], label=CLS_NAME[k], alpha=0.6)
+    gx = np.median(xyz[lab == 1, 0])
+    a2.axhline(gx, ls="--", color="k", lw=2)
+    a2.set_ylim(1.4, 4.6)
+    a2.text(a2.get_xlim()[0], gx + 0.05, " the ONE plane RANSAC fits", va="bottom", fontsize=12)
+    a2.set_title("Problem 2 — many depth layers")
+    a2.set_xlabel("y (m)"); a2.set_ylabel("x — depth from sensor (m)")
+    a2.legend(loc="upper right", markerscale=4, fontsize=11)
+    fig.suptitle("Why the single-board, single-plane pipeline breaks on real windows",
+                 fontsize=17, fontweight="bold", y=1.02)
+    fig.tight_layout(); fig.savefig(f"{OUT}/S03_ransac_baseline.png")
     plt.close(fig)
 
 
 # ============================================================ S06 pointnet motivation
 def fig_pointnet_motivation():
-    d = load_one("Oxy", 1)
-    xyz = d["xyz"]
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(14, 5.6))
-    y, z = xyz[:, 1], -xyz[:, 2]
-    a1.scatter(y, z, s=2, c="#888")
-    # draw a few query balls (local neighborhoods)
-    rng = np.random.default_rng(2)
-    for _ in range(6):
-        i = rng.integers(len(y))
-        a1.add_patch(Circle((y[i], z[i]), 0.28, fill=False, ec="#d62728", lw=2))
-    a1.set_title("PointNet++ learns LOCAL structure\n(query balls → features)")
-    a1.set_xlabel("y (m)"); a1.set_ylabel("height (m)"); a1.set_aspect("equal", "box")
+    """Clean schematic of PointNet++ set abstraction: sample centroids, group neighbours in a
+    ball, pool to a feature, repeat at a coarser scale. Plain labels, no real-scan clutter."""
+    rng = np.random.default_rng(7)
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(15, 5.8))
 
-    a2.axis("off"); a2.set_title("Why PointNet++ ?")
-    txt = ("RANSAC needs hand-tuned geometry:\n"
-           "  plane thresholds, point density, corner walks.\n"
-           "Glass breaks every one of those assumptions.\n\n"
-           "PointNet++ LEARNS the same cues automatically:\n"
-           "  • samples local neighbourhoods (query balls)\n"
-           "  • pools them into hierarchical features\n"
-           "  • captures density + geometric structure\n"
-           "  • works directly on unordered points\n\n"
-           "→ same signals RANSAC used, but learned\n"
-           "   and robust to glass / multi-window / oblique.")
-    a2.text(0.02, 0.95, txt, va="top", fontsize=15, family="monospace",
-            transform=a2.transAxes)
+    pts = rng.uniform(0, 10, (160, 2))
+    a1.scatter(pts[:, 0], pts[:, 1], s=14, c="#bbb", zorder=1)
+    cen = np.array([[2.5, 7.0], [6.8, 7.6], [3.2, 3.0], [7.4, 2.8]])
+    for c in cen:
+        a1.add_patch(Circle(c, 1.6, fill=True, fc="#1f77b4", ec="#1f77b4", alpha=0.12, zorder=2))
+        a1.add_patch(Circle(c, 1.6, fill=False, ec="#1f77b4", lw=2, zorder=3))
+        a1.scatter(*c, s=90, c="#d62728", marker="*", zorder=4)
+    a1.scatter([], [], s=90, c="#d62728", marker="*", label="sampled centroid")
+    a1.add_patch(Circle((-9, -9), 0.1, ec="#1f77b4", fc="none", label="grouping ball"))
+    a1.set_title("Set abstraction: group nearby points,\npool each ball into one feature")
+    a1.set_xlim(0, 10); a1.set_ylim(0, 10); a1.set_aspect("equal", "box")
+    a1.set_xticks([]); a1.set_yticks([]); a1.legend(loc="lower right", fontsize=12)
+
+    a2.axis("off"); a2.set_title("Why PointNet++?", loc="left")
+    txt = ("The old pipeline leaned on two cues — how DENSE the\n"
+           "points are, and the local GEOMETRY — baked into\n"
+           "hand-tuned thresholds. Glass violates all of them.\n\n"
+           "PointNet++ LEARNS those same cues:\n\n"
+           "   • picks centre points across the cloud\n"
+           "   • groups each one's neighbours in a ball\n"
+           "   • pools each ball into a local feature\n"
+           "   • repeats at coarser and coarser scales\n"
+           "   • works directly on unordered points\n\n"
+           "→ same signals, but learned — and robust to glass,\n"
+           "   many windows, and oblique views.")
+    a2.text(0.0, 0.97, txt, va="top", fontsize=15.5, transform=a2.transAxes)
     fig.tight_layout(); fig.savefig(f"{OUT}/S06_pointnet_motivation.png"); plt.close(fig)
 
 
@@ -323,55 +400,79 @@ def fig_testbed_schematic():
 
 # ============================================================ S11 sim-to-real gap
 def fig_sim_to_real():
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(14, 5.4))
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(14, 5.6))
     # synthetic: clean dense grid, every beam returns, uniform intensity
-    yy, zz = np.meshgrid(np.linspace(-0.8, 0.8, 60), np.linspace(-0.6, 0.6, 45))
-    a1.scatter(yy.ravel(), zz.ravel(), s=6, c="#1f77b4")
-    a1.set_title("Simulator (raw geometry)\nevery beam returns, no glass physics")
+    yy, zz = np.meshgrid(np.linspace(-0.8, 0.8, 70), np.linspace(-0.6, 0.6, 52))
+    a1.scatter(yy.ravel(), zz.ravel(), s=7, c="#1f77b4")
+    a1.set_title("Simulator: every beam returns, uniform")
     a1.set_xlabel("y (m)"); a1.set_ylabel("height (m)"); a1.set_aspect("equal", "box")
-    # real: sparse + saturated glass
-    d = load_one("Bech", 14)
-    xyz, lab, I = d["xyz"], d["lab"], d["I"]
-    m = lab == 1
-    sc = a2.scatter(xyz[m, 1], -xyz[m, 2], s=6, c=I[m], cmap="inferno", vmin=0, vmax=255)
-    a2.set_title("Real LiDAR on glass\nsparse, erratic, saturated returns")
+    # real: a DENSE real scan colored by intensity (all facade points) -> sparse glass + saturation
+    xyz, I, lab, N = stack_bag("L6", 1, 30)
+    keep = lab != 2                       # drop ground; keep frame+glass+interior
+    gy = xyz[lab == 1, 1]; gz = -xyz[lab == 1, 2]
+    sc = a2.scatter(xyz[keep, 1], -xyz[keep, 2], s=2, c=I[keep], cmap="turbo", vmin=0, vmax=255)
+    a2.set_xlim(np.percentile(gy, 1) - 0.4, np.percentile(gy, 99) + 0.4)
+    a2.set_ylim(np.percentile(gz, 1) - 0.6, np.percentile(gz, 99) + 0.4)
+    a2.set_title("Real LiDAR: patchy, holes, clipped at 255")
     a2.set_xlabel("y (m)"); a2.set_aspect("equal", "box")
-    fig.colorbar(sc, ax=a2, shrink=0.7, label="intensity")
+    fig.colorbar(sc, ax=a2, shrink=0.8, label="intensity (0–255)")
     fig.suptitle("The sim-to-real gap the forward model must close",
-                 fontsize=19, fontweight="bold")
-    fig.tight_layout(rect=(0, 0, 1, 0.92)); fig.savefig(f"{OUT}/S11_sim_to_real_gap.png")
+                 fontsize=18, fontweight="bold", y=1.02)
+    fig.tight_layout(); fig.savefig(f"{OUT}/S11_sim_to_real_gap.png")
     plt.close(fig)
 
 
 # ============================================================ S13 forward model
 def fig_forward_model():
-    th = np.radians(np.linspace(0, 75, 200))
-    archetypes = {
-        "L6  coated-specular": dict(a=80, g=0.7, s=20, b=120, m=0.10, c="#2ca02c"),
-        "Oxy coated-diffuse":  dict(a=130, g=0.95, s=15, b=8, m=0.15, c="#1f77b4"),
-        "Bech tinted-Fresnel": dict(a=70, g=0.4, s=190, b=8, m=0.15, c="#d62728"),
-    }
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(14, 5.6))
-    for name, p in archetypes.items():
-        rho = reflectance(th, p["a"], p["g"], p["s"], p["b"], p["m"])
-        a1.plot(np.degrees(th), np.minimum(rho, 255), color=p["c"], lw=2.5, label=name)
-    a1.axhline(255, ls="--", color="k", alpha=0.5); a1.text(2, 258, "clip at 255", fontsize=11)
-    a1.set_title("Reflectance model  ρ(θ)\n(diffuse + grazing + specular burst)")
-    a1.set_xlabel("incidence angle (deg)"); a1.set_ylabel("reported intensity")
-    a1.legend(fontsize=12); a1.set_ylim(0, 275)
-
-    for pf, lab, col in [(1.0, "matte / coated  (p_floor=1)", "#2ca02c"),
-                         (0.05, "mirror-like  (p_floor≈0)", "#d62728"),
-                         (0.4, "tinted  (p_floor=0.4)", "#1f77b4")]:
-        pr = return_probability(th, pf, cone=np.radians(12))
-        a2.plot(np.degrees(th), pr, color=col, lw=2.5, label=lab)
-    a2.set_title("Return-probability model  P(θ)\ndoes the beam come back at all?")
-    a2.set_xlabel("incidence angle (deg)"); a2.set_ylabel("P(return)")
-    a2.legend(fontsize=12); a2.set_ylim(0, 1.05)
-    fig.suptitle("First-principles forward model (range-independent ρ; 1/R² only in detection)",
+    """Plain-language schematic (no jargon): LEFT the three ways a surface returns the beam
+    (the model just adds them up); RIGHT the three real glasses as different mixes."""
+    th = np.linspace(0, 75, 200)
+    spike = np.exp(-(th / 6.0) ** 2)
+    graze = (th / 75.0) ** 3.0
+    L6 = 85 + 170 * spike + 18 * graze
+    Oxy = 130 + 33 * np.exp(-(th / 9.0) ** 2) + 40 * (th / 75.0) ** 2.5
+    Bech = np.clip(65 + 55 * np.exp(-(th / 6.0) ** 2) + 200 * (th / 72.0) ** 3.5, 0, 255)
+    fig, (a, b) = plt.subplots(1, 2, figsize=(15.5, 6.2))
+    a.plot(th, 90 + 0 * th, lw=3.5, color=DS["L6"],
+           label="1) MATTE (wall): same at every angle")
+    a.plot(th, 250 * spike, lw=3.5, color="#1f77b4",
+           label="2) MIRROR (shiny): only head-on")
+    a.plot(th, 250 * graze, lw=3.5, color=DS["Bech"],
+           label="3) GLASS edge-on: flares near grazing")
+    a.set_title("The 3 ways a surface sends the laser back\n(the model just adds these up)")
+    a.set_xlabel("how slanted the beam hits  (0 = straight on → 75 = edge-on)")
+    a.set_ylabel("light sent back to the LiDAR")
+    a.legend(loc="upper center"); a.set_ylim(0, 272)
+    b.plot(th, L6, lw=3.5, color=DS["L6"], label="L6 = mirror flash + steady glow")
+    b.plot(th, Oxy, lw=3.5, color="#1f77b4", label="Oxy = mostly steady glow (flat)")
+    b.plot(th, Bech, lw=3.5, color=DS["Bech"], label="Bech = dark, only flares edge-on")
+    b.axhline(255, ls="--", color="k", alpha=0.5); b.text(2, 258, "clips at 255", fontsize=11)
+    b.set_title("The three real glasses = different mixes")
+    b.set_xlabel("how slanted the beam hits  (0 = straight on → 75 = edge-on)")
+    b.set_ylabel("brightness that comes back (0–255)")
+    b.set_ylim(0, 272); b.legend(loc="upper center")
+    b.annotate("dark head-on\n(tint absorbs the laser)", (8, 66), (22, 100),
+               color=DS["Bech"], fontsize=12, arrowprops=dict(arrowstyle="->", color=DS["Bech"]))
+    fig.suptitle("Forward model: how each surface returns the laser (calibrated to real scans)",
                  fontsize=17, fontweight="bold")
     fig.tight_layout(rect=(0, 0, 1, 0.93)); fig.savefig(f"{OUT}/S13_forward_model.png")
     plt.close(fig)
+
+
+def fig_cloud3d():
+    """Hero real-scan view: one dense labelled L6 cloud in 3-D — the window grid is obvious."""
+    xyz, I, lab, N = stack_bag("L6", 1, 30)
+    fig = plt.figure(figsize=(12, 8))
+    ax = fig.add_subplot(111, projection="3d")
+    for k in [2, 0, 3, 1]:
+        m = lab == k
+        ax.scatter(xyz[m, 1], xyz[m, 0], -xyz[m, 2], s=2, c=CLS[k], label=CLS_NAME[k])
+    ax.set_xlabel("y — along facade (m)"); ax.set_ylabel("x — depth (m)")
+    ax.set_zlabel("height (m)")
+    ax.view_init(elev=14, azim=-78)
+    ax.set_title("A real labelled scan (L6): the window grid in the point cloud")
+    ax.legend(loc="upper left", markerscale=4, fontsize=12)
+    fig.tight_layout(); fig.savefig(f"{OUT}/S10c_cloud3d.png"); plt.close(fig)
 
 
 # ============================================================ S16 results placeholder
@@ -401,9 +502,10 @@ def fig_results_placeholder():
     plt.close(fig)
 
 
-FIGS = [fig_pointcloud_explainer, fig_labels, fig_class_distribution, fig_angular_glass,
-        fig_saturation, fig_seethrough, fig_ransac_baseline, fig_pointnet_motivation,
-        fig_testbed_schematic, fig_sim_to_real, fig_forward_model, fig_results_placeholder]
+FIGS = [fig_pointcloud_explainer, fig_labels, fig_cloud3d, fig_class_distribution,
+        fig_angular_glass, fig_saturation, fig_seethrough, fig_ransac_baseline,
+        fig_pointnet_motivation, fig_testbed_schematic, fig_sim_to_real, fig_forward_model,
+        fig_results_placeholder]
 
 
 if __name__ == "__main__":
