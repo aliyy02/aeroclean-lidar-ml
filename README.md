@@ -97,4 +97,4 @@ First PointNet++ results are in (`results/`, fold-0 held-out: mIoU 0.74, glass I
 **Pending:** corner extraction from the masks, on-robot inference, and cross-facade validation of
 the forward model + training on synthetic data.
 
-— AeroClean · EECE 690 (Applied Machine Learning), AUB
+— AeroClean · EECE 690 (Introduction to Machine Learning), AUB
