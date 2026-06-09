@@ -28,6 +28,7 @@ first-principles forward model paints realistic glass returns onto clean simulat
 | `calibration/` | Labels real L2 scans: fit the true glass plane, project points perpendicularly, region-grow → `glass / frame / interior / ground`. |
 | `analysis/` | EDA tools and `make_slides.py` (regenerates every figure in `presentation/figures/`). |
 | `presentation/figures/` | EDA / glass-characterization figures (catalogued in `figures/INDEX.md`); regenerate with `analysis/make_slides.py`. |
+| `presentation/Presentation_Deck.pptx` | The talk deck (EECE 690 system review). |
 | `docs/` | `calibration.md`, `glass_characterization.md` (the glass EDA), reference PDFs. |
 | `examples/` | A few tiny labelled sample frames + a ground-truth file, for a quick look. |
 | `results/` | First PointNet++ run (fold 0): training log + model scripts + predictions on two held-out buildings (interactive 3-D). Weights/bags excluded — see `results/README.md`. |
@@ -76,15 +77,24 @@ scripts, and predictions on two held-out buildings (Oxy, Bech — interactive 3-
 rotate) are under `results/`; see `results/README.md`. Trained weights (~140 MB of TF
 checkpoints) and raw bags are intentionally excluded.
 
-## Figures
+## Docker image & integration guide
 
-The EDA / glass-characterization figures live in `presentation/figures/` (catalogued in
-`presentation/figures/INDEX.md`). Regenerate them all with `python3 analysis/make_slides.py`.
+The trained PointNet++ model is packaged as a **Docker image (inference API)**. The image and a
+step-by-step guide to download, run, and integrate it are in this shared folder:
+
+**https://drive.google.com/drive/folders/1TQwhMs7HyZZEaBHJkdHP607GU5t0TVoE?usp=sharing**
+
+## Presentation
+
+The talk deck is **`presentation/Presentation_Deck.pptx`** (EECE 690 system review). The EDA /
+glass-characterization figures it draws on live in `presentation/figures/` (catalogued in
+`presentation/figures/INDEX.md`; regenerate with `python3 analysis/make_slides.py`).
 
 ## Status
 
 Built and tested: building generator, forward model, real-scan labelling (158 unit tests).
-**Pending:** PointNet++ inference into this repo + corner extraction from the segmentation, and
-cross-facade validation of the forward model.
+First PointNet++ results are in (`results/`, fold-0 held-out: mIoU 0.74, glass IoU 0.86).
+**Pending:** corner extraction from the masks, on-robot inference, and cross-facade validation of
+the forward model + training on synthetic data.
 
-— AeroClean · EECE 490 (Applied Machine Learning), AUB
+— AeroClean · EECE 690 (Applied Machine Learning), AUB
