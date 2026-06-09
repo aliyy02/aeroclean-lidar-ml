@@ -30,6 +30,7 @@ first-principles forward model paints realistic glass returns onto clean simulat
 | `presentation/figures/` | EDA / glass-characterization figures (catalogued in `figures/INDEX.md`); regenerate with `analysis/make_slides.py`. |
 | `docs/` | `calibration.md`, `glass_characterization.md` (the glass EDA), reference PDFs. |
 | `examples/` | A few tiny labelled sample frames + a ground-truth file, for a quick look. |
+| `results/` | First PointNet++ run (fold 0): training log + model scripts + predictions on two held-out buildings (interactive 3-D). Weights/bags excluded — see `results/README.md`. |
 
 ## Quick start (offline, no simulator)
 
@@ -65,6 +66,15 @@ bags). Three real buildings were scanned with a 6-DOF rig — **L6** (43 bags), 
 **Bechtel** (40) — 142 scans total, labelled against tape-measured window corners. See
 `docs/calibration.md` for the labelling method and `docs/glass_characterization.md` for what
 the three glass types actually do to a LiDAR. A handful of sample frames live in `examples/`.
+
+## Results
+
+First PointNet++ semantic-segmentation run on the labelled L2 scans (cross-val fold 0):
+**test mIoU 0.74**, point accuracy **0.87** — glass IoU **0.86**, ground 0.89 (frame 0.54 and
+interior 0.66 are the confusable classes; glass recall 97 %). The full training log, the model
+scripts, and predictions on two held-out buildings (Oxy, Bech — interactive 3-D HTML you can
+rotate) are under `results/`; see `results/README.md`. Trained weights (~140 MB of TF
+checkpoints) and raw bags are intentionally excluded.
 
 ## Figures
 

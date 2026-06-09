@@ -1,0 +1,1001 @@
+Namespace(gpu=0, model='model', log_dir='/content/drive/MyDrive/pointnet2_runs/run_01/fold0', num_point=20480, max_epoch=80, batch_size=4, data_root='/content/drive/MyDrive/pointnet2-master/data/scannet_data_pointnet2_fold0', num_classes=4, eval_interval=5, save_interval=5, max_train_batches=None, max_eval_batches=None, whole_scene_eval=False, learning_rate=0.001, momentum=0.9, optimizer='adam', decay_step=200000, decay_rate=0.7)
+pid: 19215
+**** EPOCH 000 ****
+2026-06-08 23:48:06.795982
+ -- 010 / 021 --
+mean loss: 4.011009
+accuracy: 0.374717
+ -- 020 / 021 --
+mean loss: 2.980278
+accuracy: 0.553663
+2026-06-08 23:48:45.071468
+---- EPOCH 000 VAL EVALUATION ----
+val mean loss: 2.732629
+val point accuracy: 0.627736
+val mean class accuracy: 0.619375
+val mean precision: 0.623631
+val mean recall: 0.619375
+val mean F1: 0.595316
+val mean IoU: 0.433333
+val per-class metrics:
+  class 0 not_glass: count=107212 precision=0.569532 recall=0.342881 f1=0.428056 iou=0.272310 accuracy=0.342881
+  class 1 glass: count=110711 precision=0.476912 recall=0.881773 f1=0.619022 iou=0.448249 accuracy=0.881773
+  class 2 ground: count=226728 precision=0.877228 recall=0.655848 f1=0.750554 iou=0.600709 accuracy=0.655848
+  class 3 interior: count=128789 precision=0.570853 recall=0.597000 f1=0.583633 iou=0.412064 accuracy=0.597000
+val confusion matrix rows=true cols=pred:
+  class 0 not_glass: 36761 32242 9352 28857
+  class 1 glass: 2269 97622 4941 5879
+  class 2 ground: 6758 48206 148699 23065
+  class 3 interior: 18758 26626 6518 76887
+Best validation mIoU improved to 0.433333
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/best_model_epoch_000.ckpt
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/model.ckpt
+**** EPOCH 001 ****
+2026-06-08 23:48:56.555144
+ -- 010 / 021 --
+mean loss: 2.585984
+accuracy: 0.590975
+ -- 020 / 021 --
+mean loss: 2.637984
+accuracy: 0.555103
+**** EPOCH 002 ****
+2026-06-08 23:49:27.551757
+ -- 010 / 021 --
+mean loss: 2.427162
+accuracy: 0.613536
+ -- 020 / 021 --
+mean loss: 2.356185
+accuracy: 0.625162
+**** EPOCH 003 ****
+2026-06-08 23:49:58.834388
+ -- 010 / 021 --
+mean loss: 2.233345
+accuracy: 0.602581
+ -- 020 / 021 --
+mean loss: 2.148571
+accuracy: 0.649208
+**** EPOCH 004 ****
+2026-06-08 23:50:29.768129
+ -- 010 / 021 --
+mean loss: 1.663835
+accuracy: 0.687500
+ -- 020 / 021 --
+mean loss: 2.293566
+accuracy: 0.651796
+**** EPOCH 005 ****
+2026-06-08 23:51:00.836397
+ -- 010 / 021 --
+mean loss: 1.889819
+accuracy: 0.701715
+ -- 020 / 021 --
+mean loss: 1.793651
+accuracy: 0.708710
+2026-06-08 23:51:31.667553
+---- EPOCH 001 VAL EVALUATION ----
+val mean loss: 1.580205
+val point accuracy: 0.793290
+val mean class accuracy: 0.755350
+val mean precision: 0.766971
+val mean recall: 0.755350
+val mean F1: 0.748655
+val mean IoU: 0.628757
+val per-class metrics:
+  class 0 not_glass: count=107212 precision=0.664094 recall=0.367645 f1=0.473281 iou=0.309999 accuracy=0.367645
+  class 1 glass: count=110711 precision=0.878120 recall=0.948695 f1=0.912044 iou=0.838310 accuracy=0.948695
+  class 2 ground: count=226728 precision=0.869614 recall=0.927764 f1=0.897748 iou=0.814467 accuracy=0.927764
+  class 3 interior: count=128789 precision=0.656056 recall=0.777295 f1=0.711548 iou=0.552250 accuracy=0.777295
+val confusion matrix rows=true cols=pred:
+  class 0 not_glass: 39416 9642 18065 40089
+  class 1 glass: 2715 105031 1486 1479
+  class 2 ground: 3552 1912 210350 10914
+  class 3 interior: 13670 3024 11988 100107
+Best validation mIoU improved to 0.628757
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/best_model_epoch_005.ckpt
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/model.ckpt
+**** EPOCH 006 ****
+2026-06-08 23:51:42.316947
+ -- 010 / 021 --
+mean loss: 1.852876
+accuracy: 0.642643
+ -- 020 / 021 --
+mean loss: 1.950616
+accuracy: 0.671627
+**** EPOCH 007 ****
+2026-06-08 23:52:13.579785
+ -- 010 / 021 --
+mean loss: 1.594977
+accuracy: 0.687108
+ -- 020 / 021 --
+mean loss: 1.677177
+accuracy: 0.659845
+**** EPOCH 008 ****
+2026-06-08 23:52:44.664961
+ -- 010 / 021 --
+mean loss: 1.917272
+accuracy: 0.710117
+ -- 020 / 021 --
+mean loss: 1.844693
+accuracy: 0.609205
+**** EPOCH 009 ****
+2026-06-08 23:53:15.610188
+ -- 010 / 021 --
+mean loss: 1.685480
+accuracy: 0.644791
+ -- 020 / 021 --
+mean loss: 1.647228
+accuracy: 0.660271
+**** EPOCH 010 ****
+2026-06-08 23:53:46.589887
+ -- 010 / 021 --
+mean loss: 1.533128
+accuracy: 0.688134
+ -- 020 / 021 --
+mean loss: 1.982809
+accuracy: 0.717312
+2026-06-08 23:54:17.485287
+---- EPOCH 002 VAL EVALUATION ----
+val mean loss: 1.326395
+val point accuracy: 0.834345
+val mean class accuracy: 0.817880
+val mean precision: 0.807672
+val mean recall: 0.817880
+val mean F1: 0.809930
+val mean IoU: 0.696016
+val per-class metrics:
+  class 0 not_glass: count=107212 precision=0.690895 recall=0.588264 f1=0.635462 iou=0.465698 accuracy=0.588264
+  class 1 glass: count=110711 precision=0.852499 recall=0.971475 f1=0.908107 iou=0.831681 accuracy=0.971475
+  class 2 ground: count=226728 precision=0.953349 recall=0.892051 f1=0.921682 iou=0.854741 accuracy=0.892051
+  class 3 interior: count=128789 precision=0.733944 recall=0.819728 f1=0.774468 iou=0.631944 accuracy=0.819728
+val confusion matrix rows=true cols=pred:
+  class 0 not_glass: 63069 11648 7630 24865
+  class 1 glass: 2465 107553 297 396
+  class 2 ground: 9673 1793 202253 13009
+  class 3 interior: 16079 5168 1970 105572
+Best validation mIoU improved to 0.696016
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/best_model_epoch_010.ckpt
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/model.ckpt
+**** EPOCH 011 ****
+2026-06-08 23:54:28.140999
+ -- 010 / 021 --
+mean loss: 1.758989
+accuracy: 0.770066
+ -- 020 / 021 --
+mean loss: 1.654749
+accuracy: 0.732219
+**** EPOCH 012 ****
+2026-06-08 23:54:59.604730
+ -- 010 / 021 --
+mean loss: 1.897703
+accuracy: 0.671747
+ -- 020 / 021 --
+mean loss: 1.549080
+accuracy: 0.681754
+**** EPOCH 013 ****
+2026-06-08 23:55:30.618448
+ -- 010 / 021 --
+mean loss: 1.519245
+accuracy: 0.699285
+ -- 020 / 021 --
+mean loss: 1.436249
+accuracy: 0.699586
+**** EPOCH 014 ****
+2026-06-08 23:56:01.657191
+ -- 010 / 021 --
+mean loss: 1.394718
+accuracy: 0.677695
+ -- 020 / 021 --
+mean loss: 1.295164
+accuracy: 0.745297
+**** EPOCH 015 ****
+2026-06-08 23:56:32.809410
+ -- 010 / 021 --
+mean loss: 1.360922
+accuracy: 0.736652
+ -- 020 / 021 --
+mean loss: 1.402456
+accuracy: 0.701221
+2026-06-08 23:57:03.803177
+---- EPOCH 003 VAL EVALUATION ----
+val mean loss: 1.331666
+val point accuracy: 0.817555
+val mean class accuracy: 0.786529
+val mean precision: 0.785180
+val mean recall: 0.786529
+val mean F1: 0.784653
+val mean IoU: 0.672019
+val per-class metrics:
+  class 0 not_glass: count=107212 precision=0.599710 recall=0.517601 f1=0.555638 iou=0.384695 accuracy=0.517601
+  class 1 glass: count=110711 precision=0.909291 recall=0.930973 f1=0.920004 iou=0.851859 accuracy=0.930973
+  class 2 ground: count=226728 precision=0.939272 recall=0.935606 f1=0.937435 iou=0.882238 accuracy=0.935606
+  class 3 interior: count=128789 precision=0.692449 recall=0.761936 f1=0.725533 iou=0.569283 accuracy=0.761936
+val confusion matrix rows=true cols=pred:
+  class 0 not_glass: 55493 8035 9492 34192
+  class 1 glass: 2816 103069 1335 3491
+  class 2 ground: 8473 226 212128 5901
+  class 3 interior: 25751 2021 2888 98129
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/model.ckpt
+**** EPOCH 016 ****
+2026-06-08 23:57:14.275843
+ -- 010 / 021 --
+mean loss: 1.337869
+accuracy: 0.737230
+ -- 020 / 021 --
+mean loss: 1.180190
+accuracy: 0.800251
+**** EPOCH 017 ****
+2026-06-08 23:57:45.343022
+ -- 010 / 021 --
+mean loss: 1.101743
+accuracy: 0.777341
+ -- 020 / 021 --
+mean loss: 1.265700
+accuracy: 0.677996
+**** EPOCH 018 ****
+2026-06-08 23:58:16.397848
+ -- 010 / 021 --
+mean loss: 1.211864
+accuracy: 0.719464
+ -- 020 / 021 --
+mean loss: 1.115919
+accuracy: 0.746210
+**** EPOCH 019 ****
+2026-06-08 23:58:47.400894
+ -- 010 / 021 --
+mean loss: 1.173026
+accuracy: 0.769868
+ -- 020 / 021 --
+mean loss: 1.166282
+accuracy: 0.748610
+**** EPOCH 020 ****
+2026-06-08 23:59:18.430977
+ -- 010 / 021 --
+mean loss: 1.128565
+accuracy: 0.785925
+ -- 020 / 021 --
+mean loss: 1.148460
+accuracy: 0.788466
+2026-06-08 23:59:49.386683
+---- EPOCH 004 VAL EVALUATION ----
+val mean loss: 1.054876
+val point accuracy: 0.859429
+val mean class accuracy: 0.836762
+val mean precision: 0.835938
+val mean recall: 0.836762
+val mean F1: 0.835072
+val mean IoU: 0.731715
+val per-class metrics:
+  class 0 not_glass: count=107212 precision=0.724523 recall=0.625919 f1=0.671621 iou=0.505594 accuracy=0.625919
+  class 1 glass: count=110711 precision=0.895084 recall=0.965722 f1=0.929062 iou=0.867522 accuracy=0.965722
+  class 2 ground: count=226728 precision=0.937412 recall=0.946831 f1=0.942098 iou=0.890534 accuracy=0.946831
+  class 3 interior: count=128789 precision=0.786734 recall=0.808578 f1=0.797506 iou=0.663211 accuracy=0.808578
+val confusion matrix rows=true cols=pred:
+  class 0 not_glass: 67106 9388 11976 18742
+  class 1 glass: 2810 106916 473 512
+  class 2 ground: 2776 304 214673 8975
+  class 3 interior: 19929 2840 1884 104136
+Best validation mIoU improved to 0.731715
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/best_model_epoch_020.ckpt
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/model.ckpt
+**** EPOCH 021 ****
+2026-06-09 00:00:00.084027
+ -- 010 / 021 --
+mean loss: 1.129052
+accuracy: 0.739934
+ -- 020 / 021 --
+mean loss: 0.999839
+accuracy: 0.810376
+**** EPOCH 022 ****
+2026-06-09 00:00:31.609465
+ -- 010 / 021 --
+mean loss: 1.063975
+accuracy: 0.751857
+ -- 020 / 021 --
+mean loss: 0.941063
+accuracy: 0.766788
+**** EPOCH 023 ****
+2026-06-09 00:01:02.532164
+ -- 010 / 021 --
+mean loss: 0.925634
+accuracy: 0.729808
+ -- 020 / 021 --
+mean loss: 1.033792
+accuracy: 0.783319
+**** EPOCH 024 ****
+2026-06-09 00:01:33.465851
+ -- 010 / 021 --
+mean loss: 0.968064
+accuracy: 0.855922
+ -- 020 / 021 --
+mean loss: 1.007391
+accuracy: 0.772155
+**** EPOCH 025 ****
+2026-06-09 00:02:04.430894
+ -- 010 / 021 --
+mean loss: 1.069420
+accuracy: 0.680768
+ -- 020 / 021 --
+mean loss: 1.059277
+accuracy: 0.801637
+2026-06-09 00:02:35.332304
+---- EPOCH 005 VAL EVALUATION ----
+val mean loss: 1.063347
+val point accuracy: 0.864786
+val mean class accuracy: 0.839929
+val mean precision: 0.839665
+val mean recall: 0.839929
+val mean F1: 0.838032
+val mean IoU: 0.736330
+val per-class metrics:
+  class 0 not_glass: count=107212 precision=0.732084 recall=0.620304 f1=0.671574 iou=0.505542 accuracy=0.620304
+  class 1 glass: count=110711 precision=0.878458 recall=0.971746 f1=0.922750 iou=0.856580 accuracy=0.971746
+  class 2 ground: count=226728 precision=0.942951 recall=0.961416 f1=0.952094 iou=0.908568 accuracy=0.961416
+  class 3 interior: count=128789 precision=0.805167 recall=0.806249 f1=0.805708 iou=0.674632 accuracy=0.806249
+val confusion matrix rows=true cols=pred:
+  class 0 not_glass: 66504 10003 10632 20073
+  class 1 glass: 2894 107583 26 208
+  class 2 ground: 3160 743 217980 4845
+  class 3 interior: 18284 4139 2530 103836
+Best validation mIoU improved to 0.736330
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/best_model_epoch_025.ckpt
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/model.ckpt
+**** EPOCH 026 ****
+2026-06-09 00:02:46.011143
+ -- 010 / 021 --
+mean loss: 1.007785
+accuracy: 0.744243
+ -- 020 / 021 --
+mean loss: 1.053146
+accuracy: 0.752141
+**** EPOCH 027 ****
+2026-06-09 00:03:17.133297
+ -- 010 / 021 --
+mean loss: 0.935496
+accuracy: 0.792706
+ -- 020 / 021 --
+mean loss: 1.023356
+accuracy: 0.760084
+**** EPOCH 028 ****
+2026-06-09 00:03:47.976316
+ -- 010 / 021 --
+mean loss: 0.972650
+accuracy: 0.735214
+ -- 020 / 021 --
+mean loss: 0.997573
+accuracy: 0.728546
+**** EPOCH 029 ****
+2026-06-09 00:04:19.006310
+ -- 010 / 021 --
+mean loss: 1.001834
+accuracy: 0.707362
+ -- 020 / 021 --
+mean loss: 0.961531
+accuracy: 0.721676
+**** EPOCH 030 ****
+2026-06-09 00:04:49.989309
+ -- 010 / 021 --
+mean loss: 1.053882
+accuracy: 0.744933
+ -- 020 / 021 --
+mean loss: 0.854174
+accuracy: 0.839641
+2026-06-09 00:05:21.106793
+---- EPOCH 006 VAL EVALUATION ----
+val mean loss: 1.431255
+val point accuracy: 0.861389
+val mean class accuracy: 0.833130
+val mean precision: 0.842012
+val mean recall: 0.833130
+val mean F1: 0.834972
+val mean IoU: 0.730198
+val per-class metrics:
+  class 0 not_glass: count=107212 precision=0.727934 recall=0.631562 f1=0.676332 iou=0.510953 accuracy=0.631562
+  class 1 glass: count=110711 precision=0.873144 recall=0.965442 f1=0.916976 iou=0.846681 accuracy=0.965442
+  class 2 ground: count=226728 precision=0.906816 recall=0.978604 f1=0.941343 iou=0.889187 accuracy=0.978604
+  class 3 interior: count=128789 precision=0.860153 recall=0.756912 f1=0.805237 iou=0.673972 accuracy=0.756912
+val confusion matrix rows=true cols=pred:
+  class 0 not_glass: 67711 10655 14157 14689
+  class 1 glass: 2613 106885 968 245
+  class 2 ground: 3368 568 221877 915
+  class 3 interior: 19326 4306 7675 97482
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/model.ckpt
+**** EPOCH 031 ****
+2026-06-09 00:05:31.644914
+ -- 010 / 021 --
+mean loss: 0.994096
+accuracy: 0.674917
+ -- 020 / 021 --
+mean loss: 0.906450
+accuracy: 0.770201
+**** EPOCH 032 ****
+2026-06-09 00:06:02.649553
+ -- 010 / 021 --
+mean loss: 1.196427
+accuracy: 0.707788
+ -- 020 / 021 --
+mean loss: 0.903487
+accuracy: 0.753990
+**** EPOCH 033 ****
+2026-06-09 00:06:33.591665
+ -- 010 / 021 --
+mean loss: 1.077427
+accuracy: 0.796730
+ -- 020 / 021 --
+mean loss: 0.996418
+accuracy: 0.721750
+**** EPOCH 034 ****
+2026-06-09 00:07:04.622772
+ -- 010 / 021 --
+mean loss: 0.947569
+accuracy: 0.733157
+ -- 020 / 021 --
+mean loss: 1.014384
+accuracy: 0.814274
+**** EPOCH 035 ****
+2026-06-09 00:07:35.499711
+ -- 010 / 021 --
+mean loss: 1.071666
+accuracy: 0.731230
+ -- 020 / 021 --
+mean loss: 1.136228
+accuracy: 0.681809
+2026-06-09 00:08:06.507851
+---- EPOCH 007 VAL EVALUATION ----
+val mean loss: 1.007860
+val point accuracy: 0.862235
+val mean class accuracy: 0.844719
+val mean precision: 0.839602
+val mean recall: 0.844719
+val mean F1: 0.841410
+val mean IoU: 0.738908
+val per-class metrics:
+  class 0 not_glass: count=107212 precision=0.726470 recall=0.667295 f1=0.695626 iou=0.533303 accuracy=0.667295
+  class 1 glass: count=110711 precision=0.896747 recall=0.960510 f1=0.927534 iou=0.864861 accuracy=0.960510
+  class 2 ground: count=226728 precision=0.953617 recall=0.929563 f1=0.941437 iou=0.889353 accuracy=0.929563
+  class 3 interior: count=128789 precision=0.781575 recall=0.821506 f1=0.801043 iou=0.668117 accuracy=0.821506
+val confusion matrix rows=true cols=pred:
+  class 0 not_glass: 71542 8960 8682 18028
+  class 1 glass: 3733 106339 376 263
+  class 2 ground: 4557 136 210758 11277
+  class 3 interior: 18647 3148 1193 105801
+Best validation mIoU improved to 0.738908
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/best_model_epoch_035.ckpt
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/model.ckpt
+**** EPOCH 036 ****
+2026-06-09 00:08:17.180895
+ -- 010 / 021 --
+mean loss: 1.040199
+accuracy: 0.651733
+ -- 020 / 021 --
+mean loss: 0.877919
+accuracy: 0.715353
+**** EPOCH 037 ****
+2026-06-09 00:08:48.223132
+ -- 010 / 021 --
+mean loss: 0.840241
+accuracy: 0.749216
+ -- 020 / 021 --
+mean loss: 1.066367
+accuracy: 0.781199
+**** EPOCH 038 ****
+2026-06-09 00:09:19.207016
+ -- 010 / 021 --
+mean loss: 0.951322
+accuracy: 0.745665
+ -- 020 / 021 --
+mean loss: 0.895710
+accuracy: 0.719703
+**** EPOCH 039 ****
+2026-06-09 00:09:50.165611
+ -- 010 / 021 --
+mean loss: 0.827688
+accuracy: 0.741920
+ -- 020 / 021 --
+mean loss: 0.994980
+accuracy: 0.665742
+**** EPOCH 040 ****
+2026-06-09 00:10:21.065399
+ -- 010 / 021 --
+mean loss: 0.844445
+accuracy: 0.718608
+ -- 020 / 021 --
+mean loss: 0.929933
+accuracy: 0.746216
+2026-06-09 00:10:52.185521
+---- EPOCH 008 VAL EVALUATION ----
+val mean loss: 1.050050
+val point accuracy: 0.869414
+val mean class accuracy: 0.849112
+val mean precision: 0.847452
+val mean recall: 0.849112
+val mean F1: 0.847139
+val mean IoU: 0.747855
+val per-class metrics:
+  class 0 not_glass: count=107212 precision=0.693812 recall=0.702328 f1=0.698044 iou=0.536150 accuracy=0.702328
+  class 1 glass: count=110711 precision=0.888085 recall=0.969497 f1=0.927007 iou=0.863946 accuracy=0.969497
+  class 2 ground: count=226728 precision=0.946829 recall=0.957866 f1=0.952315 iou=0.908971 accuracy=0.957866
+  class 3 interior: count=128789 precision=0.861084 recall=0.766758 f1=0.811188 iou=0.682352 accuracy=0.766758
+val confusion matrix rows=true cols=pred:
+  class 0 not_glass: 75298 10364 9218 12332
+  class 1 glass: 2105 107334 360 912
+  class 2 ground: 6684 182 217175 2687
+  class 3 interior: 24441 2980 2618 98750
+Best validation mIoU improved to 0.747855
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/best_model_epoch_040.ckpt
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/model.ckpt
+**** EPOCH 041 ****
+2026-06-09 00:11:02.881741
+ -- 010 / 021 --
+mean loss: 1.098322
+accuracy: 0.756290
+ -- 020 / 021 --
+mean loss: 0.842301
+accuracy: 0.800547
+**** EPOCH 042 ****
+2026-06-09 00:11:34.042034
+ -- 010 / 021 --
+mean loss: 0.939840
+accuracy: 0.643083
+ -- 020 / 021 --
+mean loss: 0.862303
+accuracy: 0.785391
+**** EPOCH 043 ****
+2026-06-09 00:12:04.919692
+ -- 010 / 021 --
+mean loss: 0.824021
+accuracy: 0.727915
+ -- 020 / 021 --
+mean loss: 0.916253
+accuracy: 0.770542
+**** EPOCH 044 ****
+2026-06-09 00:12:35.895352
+ -- 010 / 021 --
+mean loss: 0.792569
+accuracy: 0.728094
+ -- 020 / 021 --
+mean loss: 0.934379
+accuracy: 0.771317
+**** EPOCH 045 ****
+2026-06-09 00:13:06.929238
+ -- 010 / 021 --
+mean loss: 0.863524
+accuracy: 0.823745
+ -- 020 / 021 --
+mean loss: 0.922441
+accuracy: 0.682518
+2026-06-09 00:13:37.905833
+---- EPOCH 009 VAL EVALUATION ----
+val mean loss: 1.015119
+val point accuracy: 0.870810
+val mean class accuracy: 0.845303
+val mean precision: 0.852693
+val mean recall: 0.845303
+val mean F1: 0.848192
+val mean IoU: 0.747773
+val per-class metrics:
+  class 0 not_glass: count=107212 precision=0.717948 recall=0.701582 f1=0.709671 iou=0.549992 accuracy=0.701582
+  class 1 glass: count=110711 precision=0.906009 recall=0.927008 f1=0.916388 iou=0.845680 accuracy=0.927008
+  class 2 ground: count=226728 precision=0.925715 recall=0.978062 f1=0.951169 iou=0.906884 accuracy=0.978062
+  class 3 interior: count=128789 precision=0.861100 recall=0.774561 f1=0.815542 iou=0.688535 accuracy=0.774561
+val confusion matrix rows=true cols=pred:
+  class 0 not_glass: 75218 7968 9624 14402
+  class 1 glass: 4647 102630 2335 1099
+  class 2 ground: 4300 84 221754 590
+  class 3 interior: 20603 2595 5836 99755
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/model.ckpt
+**** EPOCH 046 ****
+2026-06-09 00:13:48.318265
+ -- 010 / 021 --
+mean loss: 0.858649
+accuracy: 0.777181
+ -- 020 / 021 --
+mean loss: 0.951853
+accuracy: 0.774839
+**** EPOCH 047 ****
+2026-06-09 00:14:19.318245
+ -- 010 / 021 --
+mean loss: 0.844766
+accuracy: 0.739697
+ -- 020 / 021 --
+mean loss: 0.952053
+accuracy: 0.710166
+**** EPOCH 048 ****
+2026-06-09 00:14:50.286274
+ -- 010 / 021 --
+mean loss: 0.844382
+accuracy: 0.723722
+ -- 020 / 021 --
+mean loss: 0.900230
+accuracy: 0.767058
+**** EPOCH 049 ****
+2026-06-09 00:15:21.275502
+ -- 010 / 021 --
+mean loss: 0.813289
+accuracy: 0.772411
+ -- 020 / 021 --
+mean loss: 0.967440
+accuracy: 0.808660
+**** EPOCH 050 ****
+2026-06-09 00:15:52.402341
+ -- 010 / 021 --
+mean loss: 0.820965
+accuracy: 0.770159
+ -- 020 / 021 --
+mean loss: 0.849751
+accuracy: 0.784548
+2026-06-09 00:16:23.389249
+---- EPOCH 010 VAL EVALUATION ----
+val mean loss: 0.976997
+val point accuracy: 0.879829
+val mean class accuracy: 0.856654
+val mean precision: 0.863096
+val mean recall: 0.856654
+val mean F1: 0.858903
+val mean IoU: 0.764014
+val per-class metrics:
+  class 0 not_glass: count=107212 precision=0.726721 recall=0.723874 f1=0.725295 iou=0.568990 accuracy=0.723874
+  class 1 glass: count=110711 precision=0.919431 recall=0.948930 f1=0.933948 iou=0.876081 accuracy=0.948930
+  class 2 ground: count=226728 precision=0.932217 recall=0.980122 f1=0.955569 iou=0.914919 accuracy=0.980122
+  class 3 interior: count=128789 precision=0.874015 recall=0.773692 f1=0.820799 iou=0.696064 accuracy=0.773692
+val confusion matrix rows=true cols=pred:
+  class 0 not_glass: 77608 7955 9542 12107
+  class 1 glass: 3417 105057 743 1494
+  class 2 ground: 3706 39 222221 762
+  class 3 interior: 22061 1212 5873 99643
+Best validation mIoU improved to 0.764014
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/best_model_epoch_050.ckpt
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/model.ckpt
+**** EPOCH 051 ****
+2026-06-09 00:16:33.999080
+ -- 010 / 021 --
+mean loss: 0.790581
+accuracy: 0.763452
+ -- 020 / 021 --
+mean loss: 0.928404
+accuracy: 0.781355
+**** EPOCH 052 ****
+2026-06-09 00:17:04.989004
+ -- 010 / 021 --
+mean loss: 0.829196
+accuracy: 0.709873
+ -- 020 / 021 --
+mean loss: 0.863895
+accuracy: 0.742745
+**** EPOCH 053 ****
+2026-06-09 00:17:35.927228
+ -- 010 / 021 --
+mean loss: 0.794585
+accuracy: 0.761482
+ -- 020 / 021 --
+mean loss: 0.887742
+accuracy: 0.746010
+**** EPOCH 054 ****
+2026-06-09 00:18:06.833115
+ -- 010 / 021 --
+mean loss: 0.983591
+accuracy: 0.769404
+ -- 020 / 021 --
+mean loss: 1.016544
+accuracy: 0.803734
+**** EPOCH 055 ****
+2026-06-09 00:18:37.771966
+ -- 010 / 021 --
+mean loss: 0.962469
+accuracy: 0.733555
+ -- 020 / 021 --
+mean loss: 0.885903
+accuracy: 0.766879
+2026-06-09 00:19:08.752427
+---- EPOCH 011 VAL EVALUATION ----
+val mean loss: 1.178830
+val point accuracy: 0.862830
+val mean class accuracy: 0.844859
+val mean precision: 0.838223
+val mean recall: 0.844859
+val mean F1: 0.838810
+val mean IoU: 0.732703
+val per-class metrics:
+  class 0 not_glass: count=107212 precision=0.739294 recall=0.670951 f1=0.703466 iou=0.542575 accuracy=0.670951
+  class 1 glass: count=110711 precision=0.808791 recall=0.980454 f1=0.886387 iou=0.795957 accuracy=0.980454
+  class 2 ground: count=226728 precision=0.959310 recall=0.936792 f1=0.947917 iou=0.900991 accuracy=0.936792
+  class 3 interior: count=128789 precision=0.845500 recall=0.791240 f1=0.817470 iou=0.691290 accuracy=0.791240
+val confusion matrix rows=true cols=pred:
+  class 0 not_glass: 71934 15361 6304 13613
+  class 1 glass: 1754 108547 148 262
+  class 2 ground: 6432 3153 212397 4746
+  class 3 interior: 17181 7148 2557 101903
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/model.ckpt
+**** EPOCH 056 ****
+2026-06-09 00:19:19.188088
+ -- 010 / 021 --
+mean loss: 0.999600
+accuracy: 0.699065
+ -- 020 / 021 --
+mean loss: 1.241503
+accuracy: 0.692067
+**** EPOCH 057 ****
+2026-06-09 00:19:50.250291
+ -- 010 / 021 --
+mean loss: 1.387872
+accuracy: 0.646123
+ -- 020 / 021 --
+mean loss: 0.936939
+accuracy: 0.744624
+**** EPOCH 058 ****
+2026-06-09 00:20:21.317330
+ -- 010 / 021 --
+mean loss: 0.875056
+accuracy: 0.825940
+ -- 020 / 021 --
+mean loss: 1.026974
+accuracy: 0.718643
+**** EPOCH 059 ****
+2026-06-09 00:20:52.581546
+ -- 010 / 021 --
+mean loss: 1.036014
+accuracy: 0.714257
+ -- 020 / 021 --
+mean loss: 0.939004
+accuracy: 0.766775
+**** EPOCH 060 ****
+2026-06-09 00:21:23.667206
+ -- 010 / 021 --
+mean loss: 0.917815
+accuracy: 0.770835
+ -- 020 / 021 --
+mean loss: 1.162367
+accuracy: 0.775608
+2026-06-09 00:21:54.673957
+---- EPOCH 012 VAL EVALUATION ----
+val mean loss: 1.188959
+val point accuracy: 0.846711
+val mean class accuracy: 0.824406
+val mean precision: 0.827811
+val mean recall: 0.824406
+val mean F1: 0.819577
+val mean IoU: 0.707590
+val per-class metrics:
+  class 0 not_glass: count=107212 precision=0.642791 recall=0.730487 f1=0.683839 iou=0.519571 accuracy=0.730487
+  class 1 glass: count=110711 precision=0.820726 recall=0.950258 f1=0.880755 iou=0.786919 accuracy=0.950258
+  class 2 ground: count=226728 precision=0.947795 recall=0.957544 f1=0.952645 iou=0.909572 accuracy=0.957544
+  class 3 interior: count=128789 precision=0.899933 recall=0.659334 f1=0.761071 iou=0.614298 accuracy=0.659334
+val confusion matrix rows=true cols=pred:
+  class 0 not_glass: 78317 12581 7498 8816
+  class 1 glass: 5398 105204 88 21
+  class 2 ground: 6179 2842 217102 605
+  class 3 interior: 31945 7557 4372 84915
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/model.ckpt
+**** EPOCH 061 ****
+2026-06-09 00:22:05.142478
+ -- 010 / 021 --
+mean loss: 0.929012
+accuracy: 0.817832
+ -- 020 / 021 --
+mean loss: 1.103503
+accuracy: 0.728646
+**** EPOCH 062 ****
+2026-06-09 00:22:36.235024
+ -- 010 / 021 --
+mean loss: 1.132158
+accuracy: 0.715209
+ -- 020 / 021 --
+mean loss: 0.996501
+accuracy: 0.765729
+**** EPOCH 063 ****
+2026-06-09 00:23:07.313890
+ -- 010 / 021 --
+mean loss: 1.062280
+accuracy: 0.765560
+ -- 020 / 021 --
+mean loss: 0.868973
+accuracy: 0.758309
+**** EPOCH 064 ****
+2026-06-09 00:23:38.290734
+ -- 010 / 021 --
+mean loss: 0.782375
+accuracy: 0.738276
+ -- 020 / 021 --
+mean loss: 0.846689
+accuracy: 0.786223
+**** EPOCH 065 ****
+2026-06-09 00:24:09.231089
+ -- 010 / 021 --
+mean loss: 0.805455
+accuracy: 0.791360
+ -- 020 / 021 --
+mean loss: 0.793556
+accuracy: 0.781342
+2026-06-09 00:24:40.251452
+---- EPOCH 013 VAL EVALUATION ----
+val mean loss: 0.937125
+val point accuracy: 0.880934
+val mean class accuracy: 0.860878
+val mean precision: 0.863047
+val mean recall: 0.860878
+val mean F1: 0.860783
+val mean IoU: 0.765686
+val per-class metrics:
+  class 0 not_glass: count=107212 precision=0.734880 recall=0.731028 f1=0.732949 iou=0.578469 accuracy=0.731028
+  class 1 glass: count=110711 precision=0.894195 recall=0.963445 f1=0.927529 iou=0.864853 accuracy=0.963445
+  class 2 ground: count=226728 precision=0.939498 recall=0.968636 f1=0.953845 iou=0.911762 accuracy=0.968636
+  class 3 interior: count=128789 precision=0.883617 recall=0.780401 f1=0.828808 iou=0.707661 accuracy=0.780401
+val confusion matrix rows=true cols=pred:
+  class 0 not_glass: 78375 8449 8189 12199
+  class 1 glass: 3434 106664 148 465
+  class 2 ground: 5426 1111 219617 574
+  class 3 interior: 19415 3061 5806 100507
+Best validation mIoU improved to 0.765686
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/best_model_epoch_065.ckpt
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/model.ckpt
+**** EPOCH 066 ****
+2026-06-09 00:24:50.903720
+ -- 010 / 021 --
+mean loss: 0.871581
+accuracy: 0.724746
+ -- 020 / 021 --
+mean loss: 0.819761
+accuracy: 0.753036
+**** EPOCH 067 ****
+2026-06-09 00:25:21.957605
+ -- 010 / 021 --
+mean loss: 0.886524
+accuracy: 0.789249
+ -- 020 / 021 --
+mean loss: 0.770993
+accuracy: 0.830194
+**** EPOCH 068 ****
+2026-06-09 00:25:52.921530
+ -- 010 / 021 --
+mean loss: 0.841120
+accuracy: 0.703597
+ -- 020 / 021 --
+mean loss: 0.794063
+accuracy: 0.792524
+**** EPOCH 069 ****
+2026-06-09 00:26:24.088424
+ -- 010 / 021 --
+mean loss: 0.752652
+accuracy: 0.787365
+ -- 020 / 021 --
+mean loss: 0.986636
+accuracy: 0.721951
+**** EPOCH 070 ****
+2026-06-09 00:26:55.084278
+ -- 010 / 021 --
+mean loss: 0.790464
+accuracy: 0.826082
+ -- 020 / 021 --
+mean loss: 0.885036
+accuracy: 0.764725
+2026-06-09 00:27:26.175266
+---- EPOCH 014 VAL EVALUATION ----
+val mean loss: 1.095479
+val point accuracy: 0.871830
+val mean class accuracy: 0.849132
+val mean precision: 0.851766
+val mean recall: 0.849132
+val mean F1: 0.849833
+val mean IoU: 0.751387
+val per-class metrics:
+  class 0 not_glass: count=107212 precision=0.740705 recall=0.666325 f1=0.701549 iou=0.540296 accuracy=0.666325
+  class 1 glass: count=110711 precision=0.913338 recall=0.949093 f1=0.930872 iou=0.870684 accuracy=0.949093
+  class 2 ground: count=226728 precision=0.936487 recall=0.960208 f1=0.948199 iou=0.901500 accuracy=0.960208
+  class 3 interior: count=128789 precision=0.816533 recall=0.820901 f1=0.818711 iou=0.693066 accuracy=0.820901
+val confusion matrix rows=true cols=pred:
+  class 0 not_glass: 71438 7447 12097 16230
+  class 1 glass: 4672 105075 563 401
+  class 2 ground: 1719 179 217706 7124
+  class 3 interior: 18617 2344 2105 105723
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/model.ckpt
+**** EPOCH 071 ****
+2026-06-09 00:27:36.626323
+ -- 010 / 021 --
+mean loss: 0.802834
+accuracy: 0.779426
+ -- 020 / 021 --
+mean loss: 0.770156
+accuracy: 0.832117
+**** EPOCH 072 ****
+2026-06-09 00:28:07.677719
+ -- 010 / 021 --
+mean loss: 0.751363
+accuracy: 0.756482
+ -- 020 / 021 --
+mean loss: 0.784315
+accuracy: 0.791293
+**** EPOCH 073 ****
+2026-06-09 00:28:38.682551
+ -- 010 / 021 --
+mean loss: 0.802123
+accuracy: 0.737192
+ -- 020 / 021 --
+mean loss: 0.765336
+accuracy: 0.737131
+**** EPOCH 074 ****
+2026-06-09 00:29:09.713229
+ -- 010 / 021 --
+mean loss: 0.732503
+accuracy: 0.771486
+ -- 020 / 021 --
+mean loss: 0.783065
+accuracy: 0.772775
+**** EPOCH 075 ****
+2026-06-09 00:29:40.574985
+ -- 010 / 021 --
+mean loss: 0.759134
+accuracy: 0.744106
+ -- 020 / 021 --
+mean loss: 0.812773
+accuracy: 0.731842
+2026-06-09 00:30:11.562661
+---- EPOCH 015 VAL EVALUATION ----
+val mean loss: 0.943774
+val point accuracy: 0.880015
+val mean class accuracy: 0.856786
+val mean precision: 0.861543
+val mean recall: 0.856786
+val mean F1: 0.858585
+val mean IoU: 0.763003
+val per-class metrics:
+  class 0 not_glass: count=107212 precision=0.719211 recall=0.731588 f1=0.725347 iou=0.569054 accuracy=0.731588
+  class 1 glass: count=110711 precision=0.912585 recall=0.926466 f1=0.919473 iou=0.850949 accuracy=0.926466
+  class 2 ground: count=226728 precision=0.943739 recall=0.978075 f1=0.960600 iou=0.924188 accuracy=0.978075
+  class 3 interior: count=128789 precision=0.870636 recall=0.791015 f1=0.828918 iou=0.707822 accuracy=0.791015
+val confusion matrix rows=true cols=pred:
+  class 0 not_glass: 78435 6163 8347 14267
+  class 1 glass: 7551 102570 307 283
+  class 2 ground: 4177 207 221757 587
+  class 3 interior: 18894 3455 4566 101874
+Model saved in file: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/model.ckpt
+**** EPOCH 076 ****
+2026-06-09 00:30:22.044399
+ -- 010 / 021 --
+mean loss: 0.744238
+accuracy: 0.755048
+ -- 020 / 021 --
+mean loss: 0.801728
+accuracy: 0.789994
+**** EPOCH 077 ****
+2026-06-09 00:30:52.982032
+ -- 010 / 021 --
+mean loss: 0.721747
+accuracy: 0.836526
+ -- 020 / 021 --
+mean loss: 0.788993
+accuracy: 0.704714
+**** EPOCH 078 ****
+2026-06-09 00:31:24.249448
+ -- 010 / 021 --
+mean loss: 0.794150
+accuracy: 0.705038
+ -- 020 / 021 --
+mean loss: 0.724481
+accuracy: 0.742343
+**** EPOCH 079 ****
+2026-06-09 00:31:55.168157
+ -- 010 / 021 --
+mean loss: 0.773523
+accuracy: 0.793682
+ -- 020 / 021 --
+mean loss: 0.776709
+accuracy: 0.810663
+Restoring best validation checkpoint: /content/drive/MyDrive/pointnet2_runs/run_01/fold0/best_model_epoch_065.ckpt
+---- FINAL TEST EVALUATION ----
+2026-06-09 00:32:26.503971
+---- EPOCH 016 TEST EVALUATION ----
+test mean loss: 0.321157
+test point accuracy: 0.873249
+test mean class accuracy: 0.839579
+test mean precision: 0.847498
+test mean recall: 0.839579
+test mean F1: 0.842157
+test mean IoU: 0.739804
+test per-class metrics:
+  class 0 not_glass: count=95879 precision=0.738818 recall=0.666183 f1=0.700623 iou=0.539199 accuracy=0.666183
+  class 1 glass: count=141927 precision=0.882452 recall=0.974261 f1=0.926087 iou=0.862348 accuracy=0.974261
+  class 2 ground: count=223815 precision=0.936787 recall=0.951089 f1=0.943884 iou=0.893731 accuracy=0.951089
+  class 3 interior: count=111819 precision=0.831936 recall=0.766784 f1=0.798032 iou=0.663938 accuracy=0.766784
+test confusion matrix rows=true cols=pred:
+  class 0 not_glass: 63873 13384 5091 13531
+  class 1 glass: 2954 138274 67 632
+  class 2 ground: 5879 1910 212868 3158
+  class 3 interior: 13747 3125 9206 85741

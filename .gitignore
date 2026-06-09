@@ -14,10 +14,13 @@ Bech_all/
 L6_test_*/
 L6_tests_*/
 
-# model weights
+# model weights / TF checkpoints / tensorboard
+# (note: *.ckpt alone does NOT match TF's *.ckpt.meta/.index/.data — hence *.ckpt.*)
 *.pt
 *.ckpt
+*.ckpt.*
 *.onnx
+events.out.tfevents.*
 
 # --- UE5 / simulator binaries ---
 *.uasset
